@@ -26,7 +26,7 @@ def unit_convertor():
         print(f"{km}km is equal to {metres}metres") 
     elif option == 2:
         m = float(input("Enter data in m: "))
-        km= m/100
+        km= m/1000
         print(f"{m}metre is equal to {km}km")
     elif option == 3:
         kg = float(input("Enter data in kg: "))
