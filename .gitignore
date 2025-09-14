@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environments
+venv/
+gensim_env/
+
+# OS files
+.DS_Store
+
+# Project data files
+users.txt
+contacts.json
+expenses.json
+todo.txt
+diary.txt
