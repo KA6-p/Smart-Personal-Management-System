@@ -1,16 +1,16 @@
 import json
 import os
-file_path = "contacts.json"
+CONTACTS_FILE = "contacts.json"
 def load_contacts():
     global contacts
-    if os.path.exists(file_path):
-        with open(file_path,"r") as f:
+    if os.path.exists(CONTACTS_FILE):
+        with open(CONTACTS_FILE,"r") as f:
             contacts = json.load(f)
     else:
      contacts = {}
 
 def save_contacts():
-    with open(file_path,"w") as f:
+    with open(CONTACTS_FILE,"w") as f:
         json.dump(contacts,f,indent = 4)         
 
 def add_contact(name,phone,email,address):
@@ -41,7 +41,7 @@ def update_contact(name,phone = None,email = None,address = None):
         if address:
             contact["address"] = address
         save_contacts()    
-        print(f"Contact '{name} updated successfully!")
+        print(f"Contact '{name}' updated successfully!")
     else:
         print(f"Contact '{name}' not found!")
 

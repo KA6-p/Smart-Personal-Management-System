@@ -1,4 +1,4 @@
-from math import e
+import math
 import random
 import string
 
@@ -8,8 +8,8 @@ def calculator():
         expression = input("Enter a mathematical expression: ")
         result = eval(expression)
         print(f"Result: {result}")
-    except:
-        print(f"Error: {e}")
+    except Exception as error:
+        print(f"Error: {error}")
 
 def unit_convertor():
     print("\n --- Unit Converter ---")
@@ -22,7 +22,7 @@ def unit_convertor():
     option = int(input("Choose an option(1-6): "))
     if option == 1:
         km = float(input("Enter data in km: "))
-        metres = km * 100
+        metres = km * 1000
         print(f"{km}km is equal to {metres}metres") 
     elif option == 2:
         m = float(input("Enter data in m: "))
