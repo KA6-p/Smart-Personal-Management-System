@@ -1,63 +1,61 @@
-# 🛠️ Smart Personal Management System
+# Smart Personal Management System
 
-> A modular, console-based personal productivity app built with Python — featuring user authentication, a diary, contact book, expense tracker, to-do list, and utility tools all in one place.
+A modular, console-based personal productivity application written in Python. The system bundles five distinct tools — a diary, contact book, expense tracker, to-do list, and a set of utility functions — behind a single authenticated entry point. All data is persisted locally to plain text and JSON files with no external database dependency.
 
 ---
 
-## 📌 Table of Contents
+## Table of Contents
 
 - [Overview](#overview)
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
 - [Usage](#usage)
-- [Modules](#modules)
+- [Module Reference](#module-reference)
 - [Data Storage](#data-storage)
-- [Technologies Used](#technologies-used)
+- [Security](#security)
+- [Dependencies](#dependencies)
 - [Author](#author)
 - [License](#license)
 
 ---
 
-## 🔍 Overview
+## Overview
 
-The **Smart Personal Management System** is a fully functional Python console application that serves as an all-in-one personal organizer. It supports multi-user authentication and gives each user access to a suite of productivity tools — from journaling and contact management to expense tracking and a password generator.
-
-This was built as a first end-to-end Python project, demonstrating modular design, file-based persistence, and clean menu-driven navigation.
+This project was built as a first end-to-end Python application with an emphasis on clean modular design. Each feature is implemented in its own file and imported into a central `main.py` that handles navigation and session management. The authentication layer ensures that personal data is protected behind a hashed password before any module is accessible.
 
 ---
 
-## ✨ Features
+## Features
 
-| Module | Capabilities |
-|--------|--------------|
-| 🔐 **User Auth** | Register & login with SHA-256 hashed passwords |
-| 📒 **Diary** | Add, view, and clear timestamped notes |
-| 📇 **Contact Book** | Add, view, update, and delete contacts (stored as JSON) |
-| 💰 **Expense Tracker** | Log expenses, view records, generate reports, calculate totals |
-| ✅ **To-Do List** | Add tasks, view list, mark tasks as done, clear completed |
-| 🛠️ **Utility Tools** | Calculator, unit converter, random password generator |
+- User registration and login with SHA-256 password hashing
+- Timestamped diary with add, view, and clear operations
+- Contact book with full CRUD support (create, read, update, delete)
+- Expense tracker with per-category reporting and running totals
+- To-do list with task completion tracking
+- Built-in calculator, unit converter, and random password generator
+- Graceful handling of `KeyboardInterrupt` and unexpected runtime errors
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Smart-Personal-Management-System/
 │
-├── main.py                 # Entry point — main menu & navigation logic
-├── user_auth.py            # User registration & login with password hashing
-├── diary_module.py         # Diary: add, read, and clear notes
-├── contact_book.py         # Contact management (CRUD operations)
-├── expense_tracker.py      # Expense logging, reporting & totals
-├── todo_list.py            # To-do list management
+├── main.py                 # Entry point; main menu and sub-menu routing
+├── user_auth.py            # Registration, login, and password hashing
+├── diary_module.py         # Diary: add, read, and clear timestamped entries
+├── contact_book.py         # Contacts: add, view, update, delete (JSON-backed)
+├── expense_tracker.py      # Expenses: log, view, categorize, total (JSON-backed)
+├── todo_list.py            # Tasks: add, view, mark done, clear
 ├── utility_tools.py        # Calculator, unit converter, password generator
 │
-├── users.txt               # Stores registered user credentials
+├── users.txt               # Stored usernames and hashed passwords
 ├── diary.txt               # Persistent diary entries
-├── contacts.json           # Contacts stored in JSON format
-├── expenses.json           # Expense records stored in JSON format
-├── todo.txt                # To-do tasks file
+├── contacts.json           # Contact records
+├── expenses.json           # Expense records
+├── todo.txt                # Task list with completion status
 │
 ├── .gitignore
 ├── LICENSE
@@ -66,31 +64,23 @@ Smart-Personal-Management-System/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
-### Prerequisites
-
-- Python 3.7 or higher
-- No external libraries required — uses the Python standard library only
-
-### Installation
+**Prerequisites:** Python 3.7 or higher. No third-party packages are required.
 
 ```bash
-# Clone the repository
 git clone https://github.com/KA6-p/Smart-Personal-Management-System.git
-
-# Navigate into the project folder
 cd Smart-Personal-Management-System
-
-# Run the application
 python main.py
 ```
 
+The data files (`users.txt`, `diary.txt`, `contacts.json`, `expenses.json`, `todo.txt`) are created automatically on first run if they do not already exist.
+
 ---
 
-## 🖥️ Usage
+## Usage
 
-On launch, you'll be greeted with the welcome screen:
+On launch, the application presents an authentication screen:
 
 ```
 === Welcome to Your Personal Management System! ===
@@ -99,7 +89,7 @@ On launch, you'll be greeted with the welcome screen:
 3 - Exit
 ```
 
-After logging in, the **Main Menu** gives you access to all modules:
+After a successful login, the main menu provides access to all modules:
 
 ```
 --- Main Menu ---
@@ -111,82 +101,82 @@ After logging in, the **Main Menu** gives you access to all modules:
 6 - Logout
 ```
 
-Each module has its own sub-menu with numbered options for easy navigation.
+Each module opens a dedicated sub-menu. Input is read from the terminal and all output is printed to the console.
 
 ---
 
-## 🧩 Modules
+## Module Reference
 
-### 🔐 User Authentication (`user_auth.py`)
-- Register new accounts with a username and password
-- Passwords are hashed using **SHA-256** before storage
-- Credentials are saved to `users.txt`
-- Login validates the hashed input against the stored hash
+### user_auth.py
 
-### 📒 Diary (`diary_module.py`)
-- Add timestamped journal entries
-- View all past notes
-- Clear/delete all diary entries
-- Entries are stored persistently in `diary.txt`
+Handles account creation and session validation. Passwords are never stored in plain text — only their SHA-256 digest is written to `users.txt`. Login recomputes the digest of the entered password and compares it against the stored value.
 
-### 📇 Contact Book (`contact_book.py`)
-- Add contacts with name, phone, email, and address
-- Look up a contact by name
-- Update specific fields (leave blank to keep existing value)
-- Delete contacts
-- Data persisted in `contacts.json`
+### diary_module.py
 
-### 💰 Expense Tracker (`expense_tracker.py`)
-- Log expenses with amount, category, and description
-- View all recorded expenses
-- Generate a categorized expense report
-- Calculate total spending
-- Data persisted in `expenses.json`
+Writes journal entries to `diary.txt` with an automatic timestamp. Supports viewing the full entry history and wiping all entries with a confirmation step.
 
-### ✅ To-Do List (`todo_list.py`)
-- Add new tasks
-- View all tasks with their completion status
-- Mark tasks as done ✔
-- Clear all tasks
-- Tasks stored in `todo.txt`
+### contact_book.py
 
-### 🛠️ Utility Tools (`utility_tools.py`)
-- **Calculator** — perform basic arithmetic operations
-- **Unit Converter** — convert between common measurement units
-- **Random Password Generator** — generate strong, random passwords
+Stores contacts as JSON objects in `contacts.json`. Each record holds a name, phone number, email address, and physical address. The update function accepts partial input — fields left blank are preserved from the existing record.
+
+### expense_tracker.py
+
+Appends expense entries to `expenses.json` with fields for amount, category, and a short description. Includes a view-all function, a category-grouped report, and a total expenditure calculation.
+
+### todo_list.py
+
+Maintains a flat list of tasks in `todo.txt`. Each task carries a pending or completed status. Tasks can be marked done individually and the full list can be cleared in one operation.
+
+### utility_tools.py
+
+Three independent utilities accessible from a single sub-menu:
+
+- **Calculator** — evaluates basic arithmetic expressions (add, subtract, multiply, divide)
+- **Unit Converter** — converts between common measurement units (length, weight, temperature)
+- **Password Generator** — produces a random alphanumeric password of a user-specified length using Python's `secrets` or `random` and `string` modules
 
 ---
 
-## 💾 Data Storage
+## Data Storage
 
-All data is stored locally using plain text and JSON files — no database required.
+All persistence is file-based. No database engine is required.
 
-| File | Contents |
-|------|----------|
-| `users.txt` | Usernames and SHA-256 hashed passwords |
-| `diary.txt` | Timestamped diary entries |
-| `contacts.json` | Contact records (name, phone, email, address) |
-| `expenses.json` | Expense entries with amount, category, and description |
-| `todo.txt` | Tasks with completion status |
-
----
-
-## 🛠️ Technologies Used
-
-- **Python 3** — core language
-- `hashlib` — SHA-256 password hashing
-- `json` — structured data storage for contacts and expenses
-- `os` / `datetime` — file handling and timestamps
-- `random` / `string` — secure password generation
+| File | Format | Contents |
+|------|--------|----------|
+| `users.txt` | Plain text | Username and SHA-256 password hash, one pair per line |
+| `diary.txt` | Plain text | Timestamped diary entries, appended sequentially |
+| `contacts.json` | JSON | Array of contact objects |
+| `expenses.json` | JSON | Array of expense objects with amount, category, and description |
+| `todo.txt` | Plain text | Task entries with inline completion markers |
 
 ---
 
-## 👤 Author
+## Security
 
-**KA6-p** — [GitHub Profile](https://github.com/KA6-p)
+Passwords are hashed with SHA-256 via Python's built-in `hashlib` module before being written to disk. The plain-text password is never stored or logged. For a personal local application this provides a reasonable level of protection, though production systems would warrant salted hashing (e.g. `bcrypt` or `argon2`).
 
 ---
 
-## 📄 License
+## Dependencies
 
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+This project uses only the Python standard library. No `pip install` step is needed.
+
+| Module | Purpose |
+|--------|---------|
+| `hashlib` | SHA-256 password hashing |
+| `json` | Reading and writing structured data files |
+| `datetime` | Timestamping diary entries |
+| `os` | File existence checks and path handling |
+| `random`, `string` | Password generation |
+
+---
+
+## Author
+
+**KA6-p** — [github.com/KA6-p](https://github.com/KA6-p)
+
+---
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
